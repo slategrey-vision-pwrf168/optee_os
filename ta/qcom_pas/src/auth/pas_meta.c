@@ -159,7 +159,7 @@ out:
 	return res;
 }
 
-TEE_Result pas_meta_get(const struct pas_hash_segment_info *hs,
+TEE_Result pas_meta_get(const struct pas_mbn *hs,
 			struct pas_oem_metadata *meta)
 {
 	const uint8_t *m = NULL;
@@ -200,7 +200,7 @@ static void zero_field(uint8_t *copy, size_t copy_len, size_t off)
 }
 
 TEE_Result
-pas_meta_get_signed_region_copy(const struct pas_hash_segment_info *hs,
+pas_meta_get_signed_region_copy(const struct pas_mbn *hs,
 				uint8_t **out, size_t *out_len)
 {
 	uint8_t *copy = NULL;
@@ -219,8 +219,8 @@ pas_meta_get_signed_region_copy(const struct pas_hash_segment_info *hs,
 		   offsetof(struct pas_mbn_header_v6, qc_signature_size));
 	zero_field(copy, hs->signed_region_size,
 		   offsetof(struct pas_mbn_header_v6, qc_cert_chain_size));
-	mask_meta_block(copy, hs->signed_region_size, hs->qc_meta,
-			hs->qc_meta_size, hs->signed_region);
+	mask_meta_block(copy, hs->signed_region_size, hs->qti_meta,
+			hs->qti_meta_size, hs->signed_region);
 
 	*out = copy;
 	*out_len = hs->signed_region_size;

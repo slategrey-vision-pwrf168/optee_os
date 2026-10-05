@@ -5,7 +5,7 @@
 
 #include <elf32.h>
 #include <elf64.h>
-#include <pas_mbn_parser.h>
+#include <auth/pas_mbn.h>
 #include <pas_mbn_parser_priv.h>
 #include <string.h>
 #include <tee_internal_api.h>
@@ -164,6 +164,20 @@ TEE_Result pas_mbn_reserve_region(const uint8_t *segment, size_t segment_size,
 	*offset += len;
 
 	return TEE_SUCCESS;
+}
+
+TEE_Result pas_mbn_get_hash_segment(const uint8_t *md, size_t md_size,
+				    const uint8_t **seg, size_t *seg_size)
+{
+	return pas_mbn_locate(md, md_size, seg, seg_size);
+}
+
+TEE_Result pas_mbn_get_region(const uint8_t *segment, size_t segment_size,
+			      size_t *offset, size_t len,
+			      const uint8_t **region, size_t *region_len)
+{
+	return pas_mbn_reserve_region(segment, segment_size, offset, len,
+				      region, region_len);
 }
 
 TEE_Result pas_mbn_parse(const uint8_t *md, size_t md_size,
